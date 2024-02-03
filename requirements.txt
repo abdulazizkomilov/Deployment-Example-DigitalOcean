@@ -1,0 +1,11 @@
+Django==5.0.1
+django-cors-headers==4.1.0
+gunicorn
+requests
+Pillow
+psycopg==3.1.9
+psycopg2-binary==2.9.6
+whitenoise==6.6.0
+python-dotenv
+django-compressor
+dj-database-url
