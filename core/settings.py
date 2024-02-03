@@ -118,12 +118,39 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+
+# DATABASES = {
+#     "default": {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         "NAME": os.environ["DBNAME"],
+#         "USER": os.environ["DBUSER"],
+#         "PASSWORD": os.environ["DBPASSWORD"],
+#         "HOST": os.environ["DBHOST"],
+#         "PORT": os.environ["DBPORT"],
+#     }
+# }
+
+
+if DEBUG is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
     }
-}
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
